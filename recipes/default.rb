@@ -17,8 +17,23 @@
 # limitations under the License.
 #
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{File.basename(node["bonita"]["package_url"])}" do
+base_filename = File.basename(node["bonita"]["package_url"])
+
+cached_filename = "#{Chef::Config[:file_cache_path]}/#{base_filename}"
+
+# Download the Bonita archive from a remote location
+remote_file cached_filename do
   source node["bonita"]["package_url"]
   checksum node["bonita"]["package_checksum"]
   mode "0644"
+  not_if { ::File.exists?(cached_filename) }
+end
+
+bash "unpack_bonita" do
+    code <<-EOF
+rm -rf /usr/local/bonita
+mkdir -p /usr/local/bonita
+cd /usr/local/bonita
+unzip -qq #{cached_filename}
+EOF
 end

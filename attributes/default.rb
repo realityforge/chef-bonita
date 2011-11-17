@@ -20,3 +20,9 @@
 default["bonita"]["version"] = '5.6'
 default["bonita"]["package_url"] = "#{node["maven"]["repository_url"]}/com/bonitasoft/bonitasoft-server/#{default["bonita"]["version"]}/bonitasoft-server-#{default["bonita"]["version"]}.zip"
 default["bonita"]["package_checksum"] = "e8570411241c0fdaef2f886f64bb10be8f659db3"
+
+unless node["tomcat"]["common_loader_additions"].any? { |entry| entry =~ /bonita_execution_engine/ }
+  set["tomcat"]["common_loader_additions"] =
+    node["tomcat"]["common_loader_additions"] +
+      ['/usr/local/bonita/bonita_execution_engine/engine/libs/*.jar', '/usr/local/bonita/bonita_execution_engine/bonita_client/libs/*.jar']
+end
