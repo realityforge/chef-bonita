@@ -37,3 +37,13 @@ cd /usr/local/bonita
 unzip -qq #{cached_filename}
 EOF
 end
+
+link "#{node['tomcat']['webapp_dir']}/bonita.war" do
+  to "/usr/local/bonita/bonita_user_experience/without_execution_engine_without_client/bonita.war"
+  notifies :restart, resources(:service => "tomcat")
+end
+
+link "#{node['tomcat']['webapp_dir']}/xcmis.war" do
+  to "/usr/local/bonita/xcmis/xcmis.war"
+  notifies :restart, resources(:service => "tomcat")
+end
