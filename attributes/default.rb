@@ -40,6 +40,7 @@ end
 unless node["tomcat"]["java_options"] =~ /org\.exoplatform\.container\.standalone\.config/
   java_options = node["tomcat"]["java_options"]
   java_options += " -DBONITA_HOME=/usr/local/bonita/conf/bonita"
+  java_options += " -Djava.security.auth.login.config=/usr/local/bonita/conf/external/security/jaas-standard.cfg"
   java_options += " -Dexo.data.dir=/usr/local/bonita/conf/external/xcmis/ext-exo-data"
   java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration.xml"
   default["tomcat"]["java_options"] = java_options
