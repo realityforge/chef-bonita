@@ -47,6 +47,9 @@ mkdir -p /usr/local/bonita
 cd /usr/local/bonita
 unzip -qq #{cached_package_filename}
 cp #{cached_driver_filename} /usr/local/bonita/bonita_execution_engine/engine/libs/#{driver_base_filename}
+chown -R #{node["tomcat"]["user"]} /usr/local/bonita
+chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita
+find /usr/local/bonita -type f -exec chmod 0700 {} \;
 EOF
 end
 
