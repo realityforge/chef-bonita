@@ -17,9 +17,19 @@
 # limitations under the License.
 #
 
-default["bonita"]["version"] = '5.6'
-default["bonita"]["package_url"] = "#{node["maven"]["repository_url"]}/com/bonitasoft/bonitasoft-server/#{default["bonita"]["version"]}/bonitasoft-server-#{default["bonita"]["version"]}.zip"
-default["bonita"]["package_checksum"] = "e8570411241c0fdaef2f886f64bb10be8f659db3"
+default["bonita"]["package_url"] = nil
+default["bonita"]["package_checksum"] = nil
+
+default["bonita"]["database"]["hibernate"]["dialect"] = "org.hibernate.dialect.SQLServerDialect"
+default["bonita"]["database"]["exo_jcr"]["dialect"] = "mssql"
+default["bonita"]["database"]["hibernate"]["interceptor"] = "org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor"
+default["bonita"]["database"]["jdbc"]["driver"] = "net.sourceforge.jtds.jdbc.Driver"
+default["bonita"]["database"]["jdbc"]["bonita_url"] = nil
+default["bonita"]["database"]["jdbc"]["xcmis_url"] = nil
+default["bonita"]["database"]["jdbc"]["username"] = "bonita"
+default["bonita"]["database"]["jdbc"]["password"] = "bonita"
+default["bonita"]["database"]["driver_package_url"] = nil
+default["bonita"]["database"]["driver_package_checksum"] = nil
 
 unless node["tomcat"]["common_loader_additions"].any? { |entry| entry =~ /bonita_execution_engine/ }
   set["tomcat"]["common_loader_additions"] =
@@ -31,6 +41,6 @@ unless node["tomcat"]["java_options"] =~ /org\.exoplatform\.container\.standalon
   java_options = node["tomcat"]["java_options"]
   java_options += " -DBONITA_HOME=/usr/local/bonita/conf/bonita"
   java_options += " -Dexo.data.dir=/usr/local/bonita/conf/external/xcmis/ext-exo-data"
-  java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration-mysql.xml"
-  node["tomcat"]["java_options"] = java_options
+  java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration.xml"
+  default["tomcat"]["java_options"] = java_options
 end
