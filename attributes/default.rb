@@ -26,3 +26,11 @@ unless node["tomcat"]["common_loader_additions"].any? { |entry| entry =~ /bonita
     node["tomcat"]["common_loader_additions"] +
       ['/usr/local/bonita/bonita_execution_engine/engine/libs/*.jar', '/usr/local/bonita/bonita_execution_engine/bonita_client/libs/*.jar']
 end
+
+unless node["tomcat"]["java_options"] =~ /org\.exoplatform\.container\.standalone\.config/
+  java_options = node["tomcat"]["java_options"]
+  java_options += " -DBONITA_HOME=/usr/local/bonita/conf/bonita"
+  java_options += " -Dexo.data.dir=/usr/local/bonita/conf/external/xcmis/ext-exo-data"
+  java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration-mysql.xml"
+  node["tomcat"]["java_options"] = java_options
+end
