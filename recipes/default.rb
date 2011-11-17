@@ -47,3 +47,9 @@ link "#{node['tomcat']['webapp_dir']}/xcmis.war" do
   to "/usr/local/bonita/xcmis/xcmis.war"
   notifies :restart, resources(:service => "tomcat")
 end
+
+directory "/usr/local/bonita/conf/bonita/licenses" do
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["group"]
+  mode "0700"
+end
