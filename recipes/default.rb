@@ -59,7 +59,7 @@ bash "add_jtds_to_bonita" do
     code <<-EOF
 cp #{cached_driver_filename} /usr/local/bonita-5.6/lib/bonita/
 EOF
-  not_if { ::File.exists?('/usr/local/bonita-5.6') }
+  not_if { ::File.exists?("/usr/local/bonita-5.6/lib/bonita/#{driver_base_filename}") }
 end
 
 bash "config_permissions" do
@@ -68,7 +68,6 @@ chown -R #{node["tomcat"]["user"]} /usr/local/bonita-5.6
 chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita-5.6
 find /usr/local/bonita-5.6 -type f | xargs chmod 0700
 EOF
-  not_if { ::File.exists?('/usr/local/bonita-5.6') }
 end
 
 template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-history.properties" do
@@ -108,7 +107,7 @@ template "#{node['tomcat']['context_dir']}/bonita.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/bonita.war", :path => 'bonita')
+  variables(:war => "/usr/local/bonita-5.6/webapps/bonita.war")
   notifies :restart, resources(:service => "tomcat")
 end
 
@@ -117,7 +116,7 @@ template "#{node['tomcat']['context_dir']}/xcmis.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war", :path => 'xcmis')
+  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war", :path => '/xcmis')
   notifies :restart, resources(:service => "tomcat")
 end
 
@@ -126,7 +125,7 @@ template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/bonita-app.war", :path => 'bonita-app')
+  variables(:war => "/usr/local/bonita-5.6/webapps/bonita-app.war", :path => '/bonita-app')
   notifies :restart, resources(:service => "tomcat")
 end
 
