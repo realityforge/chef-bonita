@@ -78,6 +78,14 @@ template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-history.proper
   notifies :restart, resources(:service => "tomcat")
 end
 
+template "/usr/local/bonita-5.6/external/logging/logging.properties" do
+  source "logging.properties.erb"
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["group"]
+  mode "0700"
+  notifies :restart, resources(:service => "tomcat")
+end
+
 template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-journal.properties" do
   source "bonita-journal.properties.erb"
   owner node["tomcat"]["user"]
