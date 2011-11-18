@@ -42,6 +42,7 @@ unless node["tomcat"]["java_options"] =~ /org\.exoplatform\.container\.standalon
   java_options += " -Djava.security.auth.login.config=/usr/local/bonita-5.6/external/security/jaas-standard.cfg"
   java_options += " -Djava.util.logging.config.file=/usr/local/bonita-5.6/external/logging/logging.properties"
   java_options += " -Dexo.data.dir=/usr/local/bonita-5.6/external/xcmis/ext-exo-data"
+  java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
   java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/exo-configuration.xml"
   default["tomcat"]["java_options"] = java_options
 end
