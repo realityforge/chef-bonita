@@ -34,14 +34,14 @@ default["bonita"]["database"]["driver_package_checksum"] = nil
 unless node["tomcat"]["common_loader_additions"].any? { |entry| entry =~ /bonita_execution_engine/ }
   set["tomcat"]["common_loader_additions"] =
     node["tomcat"]["common_loader_additions"] +
-      ['/usr/local/bonita/bonita_execution_engine/engine/libs/*.jar', '/usr/local/bonita/bonita_execution_engine/bonita_client/libs/*.jar']
+      ['/usr/local/bonita-5.6/bonita_execution_engine/engine/libs/*.jar', '/usr/local/bonita-5.6/bonita_execution_engine/bonita_client/libs/*.jar']
 end
 
 unless node["tomcat"]["java_options"] =~ /org\.exoplatform\.container\.standalone\.config/
   java_options = node["tomcat"]["java_options"]
-  java_options += " -DBONITA_HOME=/usr/local/bonita/conf/bonita"
-  java_options += " -Djava.security.auth.login.config=/usr/local/bonita/conf/external/security/jaas-standard.cfg"
-  java_options += " -Dexo.data.dir=/usr/local/bonita/conf/external/xcmis/ext-exo-data"
-  java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration.xml"
+  java_options += " -DBONITA_HOME=/usr/local/bonita-5.6/conf/bonita"
+  java_options += " -Djava.security.auth.login.config=/usr/local/bonita-5.6/conf/external/security/jaas-standard.cfg"
+  java_options += " -Dexo.data.dir=/usr/local/bonita-5.6/conf/external/xcmis/ext-exo-data"
+  java_options += " -Dorg.exoplatform.container.standalone.config=/usr/local/bonita-5.6/conf/external/xcmis/ext-exo-conf/exo-configuration.xml"
   default["tomcat"]["java_options"] = java_options
 end

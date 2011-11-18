@@ -42,24 +42,36 @@ end
 
 bash "unpack_bonita" do
     code <<-EOF
-rm -rf /usr/local/bonita
-mkdir -p /usr/local/bonita
-cd /usr/local/bonita
+mkdir /tmp/bonita
+cd /tmp/bonita
 unzip -qq #{cached_package_filename}
-cp #{cached_driver_filename} /usr/local/bonita/bonita_execution_engine/engine/libs/#{driver_base_filename}
-chown -R #{node["tomcat"]["user"]} /usr/local/bonita
-chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita
-find /usr/local/bonita -type f -exec chmod 0700 {} \;
+cd BOS-SP-5.6-Tomcat-6.0.33
+rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
+cd /tmp/bonita
+rm -rf /usr/local/bonita-5.6
+mv BOS-SP-5.6-Tomcat-6.0.33 /usr/local/bonita-5.6
+rm -rf /tmp/bonita
 EOF
+  not_if { ::File.exists?('/usr/local/bonita-5.6') }
 end
 
-directory "/usr/local/bonita/conf/bonita/licenses" do
-  owner node["tomcat"]["user"]
-  group node["tomcat"]["group"]
-  mode "0700"
+bash "add_jtds_to_bonita" do
+    code <<-EOF
+cp #{cached_driver_filename} /usr/local/bonita-5.6/lib/bonita/
+EOF
+  not_if { ::File.exists?('/usr/local/bonita-5.6') }
 end
 
-template "/usr/local/bonita/conf/bonita/server/default/conf/bonita-history.properties" do
+bash "config_permissions" do
+    code <<-EOF
+chown -R #{node["tomcat"]["user"]} /usr/local/bonita-5.6
+chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita-5.6
+find /usr/local/bonita-5.6 -type f | xargs chmod 0700
+EOF
+  not_if { ::File.exists?('/usr/local/bonita-5.6') }
+end
+
+template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-history.properties" do
   source "bonita-history.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -67,7 +79,7 @@ template "/usr/local/bonita/conf/bonita/server/default/conf/bonita-history.prope
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita/conf/bonita/server/default/conf/bonita-journal.properties" do
+template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-journal.properties" do
   source "bonita-journal.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -75,7 +87,7 @@ template "/usr/local/bonita/conf/bonita/server/default/conf/bonita-journal.prope
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration.xml" do
+template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/exo-configuration.xml" do
   source "exo-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -83,7 +95,7 @@ template "/usr/local/bonita/conf/external/xcmis/ext-exo-conf/exo-configuration.x
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita/conf/external/xcmis/ext-exo-conf/cmis-jcr-configuration.xml" do
+template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/cmis-jcr-configuration.xml" do
   source "cmis-jcr-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -91,20 +103,35 @@ template "/usr/local/bonita/conf/external/xcmis/ext-exo-conf/cmis-jcr-configurat
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "#{node['tomcat']['webapp_dir']}/bonita.xml" do
-  source "bonita_context.xml.erb"
+template "#{node['tomcat']['context_dir']}/bonita.xml" do
+  source "bonita-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita/bonita_user_experience/without_execution_engine_without_client/bonita.war")
+  variables(:war => "/usr/local/bonita-5.6/webapps/bonita.war", :path => 'bonita')
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "#{node['tomcat']['webapp_dir']}/xcmis.xml" do
-  source "xcmis_context.xml.erb"
+template "#{node['tomcat']['context_dir']}/xcmis.xml" do
+  source "base-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita/xcmis/xcmis.war")
+  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war", :path => 'xcmis')
   notifies :restart, resources(:service => "tomcat")
 end
+
+template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
+  source "base-context.xml.erb"
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["group"]
+  mode "0700"
+  variables(:war => "/usr/local/bonita-5.6/webapps/bonita-app.war", :path => 'bonita-app')
+  notifies :restart, resources(:service => "tomcat")
+end
+
+#node['tomcat']['webapp_dir']
+#link "#{node['tomcat']['context_dir']}/ROOT.xml" do
+#  to "#{app['deploy_to']}/shared/#{app['id']}.xml"
+#  notifies :restart, resources(:service => "tomcat")
+#end
