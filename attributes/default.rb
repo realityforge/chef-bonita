@@ -19,6 +19,8 @@
 
 default["bonita"]["package_url"] = nil
 default["bonita"]["package_checksum"] = nil
+default["bonita"]["license_url"] = nil
+default["bonita"]["license_checksum"] = nil
 
 default["bonita"]["database"]["hibernate"]["dialect"] = "org.hibernate.dialect.SQLServerDialect"
 default["bonita"]["database"]["exo_jcr"]["dialect"] = "mssql"

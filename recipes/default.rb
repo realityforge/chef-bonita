@@ -55,6 +55,13 @@ EOF
   not_if { ::File.exists?('/usr/local/bonita-5.6') }
 end
 
+remote_file "/usr/local/bonita-5.6/bonita/server/licenses/license.lic" do
+  source node["bonita"]["license_url"]
+  checksum node["bonita"]["license_checksum"]
+  mode "0600"
+  not_if { ::File.exists?("/usr/local/bonita-5.6/bonita/server/licenses/license.lic") }
+end
+
 bash "add_jtds_to_bonita" do
     code <<-EOF
 cp #{cached_driver_filename} /usr/local/bonita-5.6/lib/bonita/
