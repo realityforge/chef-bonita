@@ -73,7 +73,7 @@ bash "config_permissions" do
     code <<-EOF
 chown -R #{node["tomcat"]["user"]} /usr/local/bonita-5.6
 chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita-5.6
-find /usr/local/bonita-5.6 -type f | xargs chmod 0700
+find /usr/local/bonita-5.6 -type f -exec chmod 0700 {} \\;
 EOF
 end
 
