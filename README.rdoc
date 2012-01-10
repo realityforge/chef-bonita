@@ -8,3 +8,11 @@ Download BonitaSoft from a remote location and install it into the tomcat direct
 
 = USAGE:
 
+= TODO:
+
+Currently when running Bonita on a SQL Server instance you need to execute the following SQL;
+
+  ALTER DATABASE BONITA SET ALLOW_SNAPSHOT_ISOLATION ON
+  ALTER DATABASE BONITA SET READ_COMMITTED_SNAPSHOT ON
+
+This should be incorporated into the build somehow...
