@@ -372,10 +372,10 @@
                         <value>
                            <object type="org.exoplatform.services.organization.OrganizationConfig$User">
                               <field name="userName">
-                                 <string>root</string>
+                                 <string><%= node["bonita"]["xcmis"]["username"] %></string>
                               </field>
                               <field name="password">
-                                 <string>exo</string>
+                                 <string><%= node["bonita"]["xcmis"]["password"] %></string>
                               </field>
                               <field name="firstName">
                                  <string>Root</string>

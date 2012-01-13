@@ -117,6 +117,14 @@ template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/cmis-jcr-configurati
   notifies :restart, resources(:service => "tomcat")
 end
 
+template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-server.xml" do
+  source "bonita-server.xml.erb"
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["group"]
+  mode "0700"
+  notifies :restart, resources(:service => "tomcat")
+end
+
 template "#{node['tomcat']['context_dir']}/bonita.xml" do
   source "bonita-context.xml.erb"
   owner node["tomcat"]["user"]

@@ -33,6 +33,9 @@ default["bonita"]["database"]["jdbc"]["password"] = "bonita"
 default["bonita"]["database"]["driver_package_url"] = nil
 default["bonita"]["database"]["driver_package_checksum"] = nil
 
+default["bonita"]["xcmis"]["username"] = "xcmis"
+default["bonita"]["xcmis"]["password"] = "xcmis"
+
 unless node["tomcat"]["common_loader_additions"].any? { |entry| entry =~ /bonita-5\.6/ }
   set["tomcat"]["common_loader_additions"] =
     node["tomcat"]["common_loader_additions"] + ['/usr/local/bonita-5.6/lib/bonita/*.jar']
