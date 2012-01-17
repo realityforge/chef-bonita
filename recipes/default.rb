@@ -59,7 +59,6 @@ remote_file "/usr/local/bonita-5.6/bonita/server/licenses/license.lic" do
   source node["bonita"]["license_url"]
   checksum node["bonita"]["license_checksum"]
   mode "0600"
-  not_if { ::File.exists?("/usr/local/bonita-5.6/bonita/server/licenses/license.lic") }
 end
 
 bash "add_database_driver_to_bonita" do
