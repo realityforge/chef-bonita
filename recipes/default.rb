@@ -150,9 +150,3 @@ template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
   variables(:war => "/usr/local/bonita-5.6/webapps/bonita-app.war", :path => '/bonita-app')
   notifies :restart, resources(:service => "tomcat")
 end
-
-#node['tomcat']['webapp_dir']
-#link "#{node['tomcat']['context_dir']}/ROOT.xml" do
-#  to "#{app['deploy_to']}/shared/#{app['id']}.xml"
-#  notifies :restart, resources(:service => "tomcat")
-#end
