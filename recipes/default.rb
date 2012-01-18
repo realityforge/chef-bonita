@@ -134,11 +134,11 @@ template "#{node['tomcat']['context_dir']}/bonita.xml" do
 end
 
 template "#{node['tomcat']['context_dir']}/xcmis.xml" do
-  source "base-context.xml.erb"
+  source "xcmis-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war", :path => '/xcmis')
+  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war")
   notifies :restart, resources(:service => "tomcat")
 end
 
