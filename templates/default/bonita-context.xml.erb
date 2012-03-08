@@ -1,6 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Context docBase="<%= @war %>" path="/bonita" debug="5" reloadable="false" crossContext="true" allowLinking="true">
   <Environment name="appEnvironment" value="<%= node.chef_environment %>" type="java.lang.String" override="false"/>
+
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+
     <Resource name="bonita/default/journal"
               auth="Container"
               type="javax.sql.DataSource"

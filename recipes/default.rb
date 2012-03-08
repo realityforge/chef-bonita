@@ -45,17 +45,17 @@ bash "unpack_bonita" do
 mkdir /tmp/bonita
 cd /tmp/bonita
 unzip -qq #{cached_package_filename}
-cd BOS-SP-5.6-Tomcat-6.0.33
+cd BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33
 rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
 cd /tmp/bonita
-rm -rf /usr/local/bonita-5.6
-mv BOS-SP-5.6-Tomcat-6.0.33 /usr/local/bonita-5.6
+rm -rf #{node["bonita"]["home_dir"]}
+mv BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33 #{node["bonita"]["home_dir"]}
 rm -rf /tmp/bonita
 EOF
-  not_if { ::File.exists?('/usr/local/bonita-5.6') }
+  not_if { ::File.exists?('#{node["bonita"]["home_dir"]}') }
 end
 
-remote_file "/usr/local/bonita-5.6/bonita/server/licenses/license.lic" do
+remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
   source node["bonita"]["license_url"]
   checksum node["bonita"]["license_checksum"]
   mode "0600"
@@ -63,20 +63,20 @@ end
 
 bash "add_database_driver_to_bonita" do
     code <<-EOF
-cp #{cached_driver_filename} /usr/local/bonita-5.6/lib/bonita/
+cp #{cached_driver_filename} #{node["bonita"]["home_dir"]}/lib/bonita/
 EOF
-  not_if { ::File.exists?("/usr/local/bonita-5.6/lib/bonita/#{driver_base_filename}") }
+  not_if { ::File.exists?("#{node["bonita"]["home_dir"]}/lib/bonita/#{driver_base_filename}") }
 end
 
 bash "config_permissions" do
     code <<-EOF
-chown -R #{node["tomcat"]["user"]} /usr/local/bonita-5.6
-chgrp -R #{node["tomcat"]["group"]} /usr/local/bonita-5.6
-find /usr/local/bonita-5.6 -type f -exec chmod 0700 {} \\;
+chown -R #{node["tomcat"]["user"]} #{node["bonita"]["home_dir"]}
+chgrp -R #{node["tomcat"]["group"]} #{node["bonita"]["home_dir"]}
+find #{node["bonita"]["home_dir"]} -type f -exec chmod 0700 {} \\;
 EOF
 end
 
-template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-history.properties" do
+template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-history.properties" do
   source "bonita-history.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -84,7 +84,7 @@ template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-history.proper
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita-5.6/external/logging/logging.properties" do
+template "#{node["bonita"]["home_dir"]}/external/logging/logging.properties" do
   source "logging.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -92,7 +92,7 @@ template "/usr/local/bonita-5.6/external/logging/logging.properties" do
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-journal.properties" do
+template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-journal.properties" do
   source "bonita-journal.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -100,7 +100,7 @@ template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-journal.proper
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/exo-configuration.xml" do
+template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/exo-configuration.xml" do
   source "exo-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -108,7 +108,7 @@ template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/exo-configuration.xm
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/cmis-jcr-configuration.xml" do
+template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/cmis-jcr-configuration.xml" do
   source "cmis-jcr-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -116,7 +116,7 @@ template "/usr/local/bonita-5.6/external/xcmis/ext-exo-conf/cmis-jcr-configurati
   notifies :restart, resources(:service => "tomcat")
 end
 
-template "/usr/local/bonita-5.6/bonita/server/default/conf/bonita-server.xml" do
+template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-server.xml" do
   source "bonita-server.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
@@ -129,7 +129,7 @@ template "#{node['tomcat']['context_dir']}/bonita.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/bonita.war")
+  variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita.war")
   notifies :restart, resources(:service => "tomcat")
 end
 
@@ -138,7 +138,7 @@ template "#{node['tomcat']['context_dir']}/xcmis.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/xcmis.war")
+  variables(:war => "#{node["bonita"]["home_dir"]}/webapps/xcmis.war")
   notifies :restart, resources(:service => "tomcat")
 end
 
@@ -147,6 +147,6 @@ template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  variables(:war => "/usr/local/bonita-5.6/webapps/bonita-app.war", :path => '/bonita-app')
+  variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita-app.war", :path => '/bonita-app')
   notifies :restart, resources(:service => "tomcat")
 end
