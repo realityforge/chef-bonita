@@ -20,6 +20,7 @@ hibernate.hbm2ddl.auto                   update
 # Location of the datasource (define in Tomcat configuration file: conf/context.xml)
 hibernate.connection.datasource          java:/comp/env/bonita/default/journal
 
+#hibernate.default_schema                journal
 
 ###################
 # Common settings #
@@ -50,7 +51,7 @@ hibernate.use_sql_comments               false
 ##
 bonita.search.use                        true
 hibernate.search.default.indexBase       ${BONITA_HOME}/server/default/work/indexes/journal
-
+hibernate.jdbc.use_scrollable_resultset  true
 
 
 
