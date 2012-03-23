@@ -25,7 +25,7 @@
               username="<%= node["bonita"]["database"]["jdbc"]["username"] %>"
               password="<%= node["bonita"]["database"]["jdbc"]["password"] %>"
               driverClassName="<%= node["bonita"]["database"]["jdbc"]["driver"] %>"
-              url="<%= node["bonita"]["database"]["jdbc"]["bonita_url"] %>"/>
+              url="<%= node["bonita"]["database"]["jdbc"]["bonita_journal_url"] %>"/>
 
       <Resource name="bonita/default/history"
               auth="Container"
@@ -47,5 +47,5 @@
               username="<%= node["bonita"]["database"]["jdbc"]["username"] %>"
               password="<%= node["bonita"]["database"]["jdbc"]["password"] %>"
               driverClassName="<%= node["bonita"]["database"]["jdbc"]["driver"] %>"
-              url="<%= node["bonita"]["database"]["jdbc"]["bonita_url"] %>"/>
+              url="<%= node["bonita"]["database"]["jdbc"]["bonita_history_url"] %>"/>
 </Context>
