@@ -17,8 +17,10 @@
 # limitations under the License.
 #
 
-override["bonita"]["version"] = '5.6.1'
-override["bonita"]["home_dir"] = "/usr/local/bonita-#{node["bonita"]["version"]}"
+version = '5.6.2'
+home_dir = "/usr/local/bonita-#{version}"
+override["bonita"]["version"] = version
+override["bonita"]["home_dir"] = home_dir
 default["bonita"]["package_url"] = nil
 default["bonita"]["package_checksum"] = nil
 default["bonita"]["license_url"] = nil
@@ -39,18 +41,18 @@ default["bonita"]["database"]["driver_package_checksum"] = nil
 default["bonita"]["xcmis"]["username"] = "xcmis"
 default["bonita"]["xcmis"]["password"] = "xcmis"
 
-unless node["tomcat"]["common_loader_additions"].any? { |entry| entry.include?("#{node["bonita"]["home_dir"]}/") }
+unless node["tomcat"]["common_loader_additions"].any? { |entry| entry.include?("#{home_dir}/") }
   override["tomcat"]["common_loader_additions"] =
-    node["tomcat"]["common_loader_additions"] + ["#{node["bonita"]["home_dir"]}/lib/bonita/*.jar"]
+    node["tomcat"]["common_loader_additions"] + ["#{home_dir}/lib/bonita/*.jar"]
 end
 
-unless node["tomcat"]["java_options"].include?("#{node["bonita"]["home_dir"]}/")
+unless node["tomcat"]["java_options"].include?("#{home_dir}/")
   java_options = node["tomcat"]["java_options"]
-  java_options += " -DBONITA_HOME=#{node["bonita"]["home_dir"]}/bonita"
-  java_options += " -Djava.security.auth.login.config=#{node["bonita"]["home_dir"]}/external/security/jaas-tomcat.cfg"
-  java_options += " -Djava.util.logging.config.file=#{node["bonita"]["home_dir"]}/external/logging/logging.properties"
-  java_options += " -Dexo.data.dir=#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-data"
+  java_options += " -DBONITA_HOME=#{home_dir}/bonita"
+  java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"
+  java_options += " -Djava.util.logging.config.file=#{home_dir}/external/logging/logging.properties"
+  java_options += " -Dexo.data.dir=#{home_dir}/external/xcmis/ext-exo-data"
   java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
-  java_options += " -Dorg.exoplatform.container.standalone.config=#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/exo-configuration.xml"
+  java_options += " -Dorg.exoplatform.container.standalone.config=#{home_dir}/external/xcmis/ext-exo-conf/exo-configuration.xml"
   default["tomcat"]["java_options"] = java_options
 end
