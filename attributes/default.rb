@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_attribute "tomcat::default"
+
 version = '5.6.2'
 home_dir = "/usr/local/bonita-#{version}"
 override["bonita"]["version"] = version
@@ -41,13 +43,13 @@ default["bonita"]["database"]["driver_package_checksum"] = nil
 default["bonita"]["xcmis"]["username"] = "xcmis"
 default["bonita"]["xcmis"]["password"] = "xcmis"
 
-unless node["tomcat"]["common_loader_additions"].any? { |entry| entry.include?("#{home_dir}/") }
+unless node["tomcat"]["common_loader_additions"] && node["tomcat"]["common_loader_additions"].any? { |entry| entry.include?("#{home_dir}/") }
   override["tomcat"]["common_loader_additions"] =
     node["tomcat"]["common_loader_additions"] + ["#{home_dir}/lib/bonita/*.jar"]
 end
 
-unless node["tomcat"]["java_options"].include?("#{home_dir}/")
-  java_options = node["tomcat"]["java_options"]
+unless node["tomcat"]["java_options"] && node["tomcat"]["java_options"].include?("#{home_dir}/")
+  java_options = node["tomcat"]["java_options"] || {}
   java_options += " -DBONITA_HOME=#{home_dir}/bonita"
   java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"
   java_options += " -Djava.util.logging.config.file=#{home_dir}/external/logging/logging.properties"
