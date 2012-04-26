@@ -52,7 +52,7 @@ rm -rf #{node["bonita"]["home_dir"]}
 mv BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33 #{node["bonita"]["home_dir"]}
 rm -rf /tmp/bonita
 EOF
-  not_if { ::File.exists?('#{node["bonita"]["home_dir"]}') }
+  not_if { ::File.exists?("#{node["bonita"]["home_dir"]}") }
 end
 
 remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
