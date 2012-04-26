@@ -1,24 +1,20 @@
 = DESCRIPTION:
 
 Download BonitaSoft from a remote location and install it into the tomcat directories according to the directions. The
-cookbook has been tested with the "Subscription Pack" 5.6.1 version of the Bonita product. First you need to download the
+cookbook has been tested with the "Subscription Pack" 5.6.2 version of the Bonita product. First you need to download the
 "Bonita Open Solution Deployment" package from the downloads page (http://www.bonitasoft.com/products/BPM_downloads/all)
 and upload it to a local location. We install it in a local Maven repository with coordinates
-"com.bonitasoft:bonitasoft-server-sp:5.6.1:tomcat:zip".
+"com.bonitasoft:bonitasoft-server-sp:5.6.2:tomcat:zip".
 
 Unfortunately the install can not be completely automated as BonitaSoft requires that you generate a license for the
 specific host that the product is deployed upon. So after the initial install you need to generate a license key as per
-the directions given by BonitaSoft (i.e. Run either /usr/local/bonita-5.6/licenses/generateRequestForAnyEnvironment.sh
-or /usr/local/bonita-5.6/licenses/generateRequestForDevelopmentEnvironment.sh and send of request to bonita and wait
+the directions given by BonitaSoft (i.e. Run either /usr/local/bonita-5.6.2/licenses/generateRequestForAnyEnvironment.sh
+or /usr/local/bonita-5.6.2/licenses/generateRequestForDevelopmentEnvironment.sh and send of request to bonita and wait
 for a response). The license needs to be made available over http. We make this license also available in a local Maven
  repository.
 
 The cookbook has only been tested when deploying to MS SQL server but it is expected that modifying the configuration
 settings will make the cookbook work with other database vendors.
-
-= REQUIREMENTS:
-
-* Ubuntu (?)
 
 = ATTRIBUTES:
 
@@ -67,12 +63,3 @@ Here is some example properties defined on a role that includes bonita.
         :password => 'xcmis_password'
       }
     }
-
-= TODO:
-
-Currently when running Bonita on a SQL Server instance you need to execute the following SQL;
-
-  ALTER DATABASE BONITA SET ALLOW_SNAPSHOT_ISOLATION ON
-  ALTER DATABASE BONITA SET READ_COMMITTED_SNAPSHOT ON
-
-This should be automated somehow...
