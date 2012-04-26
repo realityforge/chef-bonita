@@ -40,13 +40,18 @@ remote_file cached_driver_filename do
   not_if { ::File.exists?(cached_driver_filename) }
 end
 
-bash "unpack_bonita" do
+bash "unpack_and_setup_bonita" do
     code <<-EOF
 mkdir /tmp/bonita
 cd /tmp/bonita
 unzip -qq #{cached_package_filename}
 cd BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33
+cp #{cached_driver_filename} lib/bonita
 rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
+mkdir -p bonita/server/licenses
+mkdir -p bonita/server/default/conf
+mkdir -p external/logging
+mkdir -p external/xcmis/ext-exo-conf
 chown -R #{node["tomcat"]["user"]} .
 chgrp -R #{node["tomcat"]["group"]} .
 find . -type f -exec chmod 0600 {} \\;
