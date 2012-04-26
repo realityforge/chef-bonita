@@ -81,7 +81,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-histor
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node["bonita"]["home_dir"]}/external/logging/logging.properties" do
@@ -89,7 +89,7 @@ template "#{node["bonita"]["home_dir"]}/external/logging/logging.properties" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-journal.properties" do
@@ -97,7 +97,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-journa
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/exo-configuration.xml" do
@@ -105,7 +105,7 @@ template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/exo-configur
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/cmis-jcr-configuration.xml" do
@@ -113,7 +113,7 @@ template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/cmis-jcr-con
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-server.xml" do
@@ -121,7 +121,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-server
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0700"
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node['tomcat']['context_dir']}/bonita.xml" do
@@ -130,7 +130,7 @@ template "#{node['tomcat']['context_dir']}/bonita.xml" do
   group node["tomcat"]["group"]
   mode "0700"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita.war")
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node['tomcat']['context_dir']}/xcmis.xml" do
@@ -139,7 +139,7 @@ template "#{node['tomcat']['context_dir']}/xcmis.xml" do
   group node["tomcat"]["group"]
   mode "0700"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/xcmis.war")
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
 
 template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
@@ -148,5 +148,5 @@ template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
   group node["tomcat"]["group"]
   mode "0700"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita-app.war", :path => '/bonita-app')
-  notifies :restart, resources(:service => "tomcat")
+  notifies :restart, "service[tomcat]", :delayed
 end
