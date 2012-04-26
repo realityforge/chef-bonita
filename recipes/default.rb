@@ -47,6 +47,9 @@ cd /tmp/bonita
 unzip -qq #{cached_package_filename}
 cd BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33
 rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
+chown -R #{node["tomcat"]["user"]} .
+chgrp -R #{node["tomcat"]["group"]} .
+find . -type f -exec chmod 0600 {} \\;
 cd /tmp/bonita
 rm -rf #{node["bonita"]["home_dir"]}
 mv BOS-SP-#{node["bonita"]["version"]}-Tomcat-6.0.33 #{node["bonita"]["home_dir"]}
@@ -58,22 +61,9 @@ end
 remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
   source node["bonita"]["license_url"]
   checksum node["bonita"]["license_checksum"]
+  owner node["tomcat"]["user"]
+  group node["tomcat"]["group"]
   mode "0600"
-end
-
-bash "add_database_driver_to_bonita" do
-    code <<-EOF
-cp #{cached_driver_filename} #{node["bonita"]["home_dir"]}/lib/bonita/
-EOF
-  not_if { ::File.exists?("#{node["bonita"]["home_dir"]}/lib/bonita/#{driver_base_filename}") }
-end
-
-bash "config_permissions" do
-    code <<-EOF
-chown -R #{node["tomcat"]["user"]} #{node["bonita"]["home_dir"]}
-chgrp -R #{node["tomcat"]["group"]} #{node["bonita"]["home_dir"]}
-find #{node["bonita"]["home_dir"]} -type f -exec chmod 0700 {} \\;
-EOF
 end
 
 template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-history.properties" do
