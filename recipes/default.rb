@@ -80,7 +80,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-histor
   source "bonita-history.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -88,7 +88,7 @@ template "#{node["bonita"]["home_dir"]}/external/logging/logging.properties" do
   source "logging.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -96,7 +96,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-journa
   source "bonita-journal.properties.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -104,7 +104,7 @@ template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/exo-configur
   source "exo-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -112,7 +112,7 @@ template "#{node["bonita"]["home_dir"]}/external/xcmis/ext-exo-conf/cmis-jcr-con
   source "cmis-jcr-configuration.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -120,7 +120,7 @@ template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-server
   source "bonita-server.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   notifies :restart, "service[tomcat]", :delayed
 end
 
@@ -128,7 +128,7 @@ template "#{node['tomcat']['context_dir']}/bonita.xml" do
   source "bonita-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita.war")
   notifies :restart, "service[tomcat]", :delayed
 end
@@ -137,7 +137,7 @@ template "#{node['tomcat']['context_dir']}/xcmis.xml" do
   source "xcmis-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/xcmis.war")
   notifies :restart, "service[tomcat]", :delayed
 end
@@ -146,7 +146,7 @@ template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
   source "base-context.xml.erb"
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  mode "0700"
+  mode "0600"
   variables(:war => "#{node["bonita"]["home_dir"]}/webapps/bonita-app.war", :path => '/bonita-app')
   notifies :restart, "service[tomcat]", :delayed
 end
