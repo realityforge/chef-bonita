@@ -23,7 +23,7 @@ settings will make the cookbook work with other database vendors.
 Attributes
 ==========
 
-* `node['bonita']['package_url']` - The url to package containing the bonita software.
+* `node['bonita']['package_url']` - The url to package containing the bonita software. Must be specified.
 * `node['bonita']['license_url']` - The url to the license file for the bonita software.
 * `node['bonita']['database']['hibernate']['dialect']` - = 'org.hibernate.dialect.SQLServerDialect'.
 * `node['bonita']['database']['exo_jcr']['dialect']` - The xCMIS jcr dialect. Defaults to 'mssql'.
