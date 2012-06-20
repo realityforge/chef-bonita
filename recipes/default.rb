@@ -17,6 +17,11 @@
 # limitations under the License.
 #
 
+raise "node['bonita']['database']['jdbc']['username'] not set" unless node['bonita']['database']['jdbc']['username']
+raise "node['bonita']['database']['jdbc']['password'] not set" unless node['bonita']['database']['jdbc']['password']
+raise "node['bonita']['xcmis']['username'] not set" unless node['bonita']['xcmis']['username']
+raise "node['bonita']['xcmis']['password'] not set" unless node['bonita']['xcmis']['password']
+
 package_url = node["bonita"]["package_url"]
 base_package_filename = File.basename(package_url)
 cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"

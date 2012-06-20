@@ -33,12 +33,12 @@ default["bonita"]["database"]["jdbc"]["driver"] = "net.sourceforge.jtds.jdbc.Dri
 default["bonita"]["database"]["jdbc"]["bonita_history_url"] = nil
 default["bonita"]["database"]["jdbc"]["bonita_journal_url"] = nil
 default["bonita"]["database"]["jdbc"]["xcmis_url"] = nil
-default["bonita"]["database"]["jdbc"]["username"] = "bonita"
-default["bonita"]["database"]["jdbc"]["password"] = "bonita"
+default["bonita"]["database"]["jdbc"]["username"] = nil
+default["bonita"]["database"]["jdbc"]["password"] = nil
 default["bonita"]["database"]["driver_package_url"] = nil
 
-default["bonita"]["xcmis"]["username"] = "xcmis"
-default["bonita"]["xcmis"]["password"] = "xcmis"
+default["bonita"]["xcmis"]["username"] = nil
+default["bonita"]["xcmis"]["password"] = nil
 
 override["tomcat"]["common_loader_additions"] =["#{home_dir}/lib/bonita/*.jar"]
 
