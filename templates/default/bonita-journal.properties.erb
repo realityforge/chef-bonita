@@ -20,7 +20,9 @@ hibernate.hbm2ddl.auto                   update
 # Location of the datasource (define in Tomcat configuration file: conf/context.xml)
 hibernate.connection.datasource          java:/comp/env/bonita/default/journal
 
-#hibernate.default_schema                journal
+<% if node['bonita']['database']['jdbc']['journal']['schema'] %>
+hibernate.default_schema                 <%= node['bonita']['database']['jdbc']['journal']['schema'] %>
+<% end %>
 
 ###################
 # Common settings #

@@ -31,9 +31,11 @@ default['bonita']['database']['hibernate']['dialect'] = 'org.hibernate.dialect.S
 default['bonita']['database']['exo_jcr']['dialect'] = 'mssql'
 default['bonita']['database']['hibernate']['interceptor'] = 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'
 default['bonita']['database']['jdbc']['driver'] = 'net.sourceforge.jtds.jdbc.Driver'
-default['bonita']['database']['jdbc']['bonita_history_url'] = nil
-default['bonita']['database']['jdbc']['bonita_journal_url'] = nil
-default['bonita']['database']['jdbc']['xcmis_url'] = nil
+default['bonita']['database']['jdbc']['history']['url'] = nil
+default['bonita']['database']['jdbc']['history']['schema'] = nil
+default['bonita']['database']['jdbc']['journal']['url'] = nil
+default['bonita']['database']['jdbc']['journal']['schema'] = nil
+default['bonita']['database']['jdbc']['xcmis']['url'] = nil
 default['bonita']['database']['jdbc']['username'] = nil
 default['bonita']['database']['jdbc']['password'] = nil
 

@@ -21,7 +21,9 @@ hibernate.hbm2ddl.auto                   update
 # Location of the datasource (define in Tomcat configuration file: conf/context.xml)
 hibernate.connection.datasource          java:/comp/env/bonita/default/history
 
-#hibernate.default_schema                 history
+<% if node['bonita']['database']['jdbc']['history']['schema'] %>
+hibernate.default_schema                 <%= node['bonita']['database']['jdbc']['history']['schema'] %>
+<% end %>
 
 ###################
 # Common settings #

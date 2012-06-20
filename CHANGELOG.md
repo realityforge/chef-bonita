@@ -1,5 +1,6 @@
 ## v0.1.1:
 
+* Rename the attributes used to define the bonita database urls and support configuration of database schemas.
 * Replace the usage of the `node['bonita']['database']['driver_package_url']` attribute with the
   `node['bonita']['extra_libraries']` attributes that contains a list of jars to add to classpath.
 * Ensure compliance with foodcritic recommendations and enforce via TravisCI.

@@ -551,7 +551,7 @@
                <name>ref-addresses</name>
                <description>ref-addresses</description>
               <property name="driverClassName" value="<%= node["bonita"]["database"]["jdbc"]["driver"] %>"/>
-              <property name="url" value="<%= node["bonita"]["database"]["jdbc"]["xcmis_url"] %>"/>
+              <property name="url" value="<%= node['bonita']['database']['jdbc']['xcmis']['url'] %>"/>
               <property name="username" value="<%= node["bonita"]["database"]["jdbc"]["username"] %>"/>
               <property name="password" value="<%= node["bonita"]["database"]["jdbc"]["password"] %>"/>
             </properties-param>

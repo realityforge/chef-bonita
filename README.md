@@ -29,8 +29,11 @@ Attributes
 * `node['bonita']['database']['exo_jcr']['dialect']` - The xCMIS jcr dialect. Defaults to 'mssql'.
 * `node['bonita']['database']['hibernate']['interceptor']` - The Bonita hibernate interceptor. Defaults to 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'.
 * `node['bonita']['database']['jdbc']['driver']` - The class name of the database driver. Defaults to 'net.sourceforge.jtds.jdbc.Driver'.
-* `node['bonita']['database']['jdbc']['bonita_url']` - The database jdbc url for bonita. Defaults to nil.
-* `node['bonita']['database']['jdbc']['xcmis_url']` - The database jdbc url for xcmis. Defaults to nil.
+* `node['bonita']['database']['jdbc']['history']['url']` - The database jdbc url for bonita history database. Must be specified.
+* `node['bonita']['database']['jdbc']['history']['schema']` - The database schema for the bonita history database. May be specified.
+* `node['bonita']['database']['jdbc']['journal']['url']` - The database jdbc url for bonita journal database. Must be specified.
+* `node['bonita']['database']['jdbc']['journal']['schema']` - The database schema for the bonita journal database. May be specified.
+* `node['bonita']['database']['jdbc']['xcmis']['url']` - The database jdbc url for xcmis. Must be specified.
 * `node['bonita']['database']['jdbc']['username']` - The database username.
 * `node['bonita']['database']['jdbc']['password']` - The database username.
 * `node['bonita']['xcmis']['username']` - The xCMIS username.
@@ -50,8 +53,9 @@ Here is some example properties defined on a role that includes bonita.
           {
             :jdbc =>
               {
-                :bonita_url => 'jdbc:jtds:sqlserver://db.example.com/BONITA',
-                :xcmis_url => 'jdbc:jtds:sqlserver://db.example.com/xCMIS',
+                :journal => {:url => 'jdbc:jtds:sqlserver://db.example.com/BONITA', :schema => 'journal'},
+                :history => {:url => 'jdbc:jtds:sqlserver://db.example.com/BONITA', :schema => 'history'},
+                :xcmis => {:url => 'jdbc:jtds:sqlserver://db.example.com/xCMIS'},
                 :username => 'username',
                 :password => 'password',
               }
