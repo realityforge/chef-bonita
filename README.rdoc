@@ -19,9 +19,7 @@ settings will make the cookbook work with other database vendors.
 = ATTRIBUTES:
 
 * `node["bonita"]["package_url"]` - The url to package containing the bonita software.
-* `node["bonita"]["package_checksum"]` - The package checksum.
 * `node["bonita"]["license_url"]` - The url to the license file for the bonita software.
-* `node["bonita"]["license_checksum"]` - The license file checksum.
 * `node["bonita"]["database"]["hibernate"]["dialect"]` - = "org.hibernate.dialect.SQLServerDialect".
 * `node["bonita"]["database"]["exo_jcr"]["dialect"]` - The xCMIS jcr dialect. Defaults to "mssql".
 * `node["bonita"]["database"]["hibernate"]["interceptor"]` - The Bonita hibernate interceptor. Defaults to "org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor".
@@ -31,7 +29,6 @@ settings will make the cookbook work with other database vendors.
 * `node["bonita"]["database"]["jdbc"]["username"]` - The database username. Defaults to "bonita".
 * `node["bonita"]["database"]["jdbc"]["password"]` - The database username. Defaults to "bonita".
 * `node["bonita"]["database"]["driver_package_url"]` - The url to package containing database driver.
-* `node["bonita"]["database"]["driver_package_checksum"]` - The checksum of the package containing database driver.
 * `node["bonita"]["xcmis"]["username"]` - The xCMIS username. Defaults to "xcmis".
 * `node["bonita"]["xcmis"]["password"]` - The xCMIS password. Defaults to "xcmis".
 
@@ -42,13 +39,10 @@ Here is some example properties defined on a role that includes bonita.
   :bonita =>
     {
       :package_url => "http://repo.example.com/com/bonitasoft/bonitasoft-server-sp/5.6/bonitasoft-server-sp-5.6-tomcat.zip",
-      :package_checksum => "15462a164fffe0533782fba3d2e9f0a6fbec308c",
       :license_url => "http://repo.example.com/com/bonitasoft/bonitasoft-server-sp/license/5.6/license-5.6-MyUser-bonita.example.com-20111128-20120226.lic",
-      :license_checksum => "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
       :database =>
         {
           :driver_package_url => "http://repo.example.com/net/sourceforge/jtds/jtds/1.2.4/jtds-1.2.4.jar",
-          :driver_package_checksum => "6761d4a036e661a8719a54b507a0fb8e",
           :jdbc =>
             {
               :bonita_url => 'jdbc:jtds:sqlserver://db.example.com/BONITA',

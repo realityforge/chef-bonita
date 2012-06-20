@@ -28,14 +28,12 @@ cached_driver_filename = "#{Chef::Config[:file_cache_path]}/#{driver_base_filena
 # Download the Bonita archive from a remote location
 remote_file cached_package_filename do
   source package_url
-  checksum node["bonita"]["package_checksum"]
   mode "0600"
   not_if { ::File.exists?(cached_package_filename) }
 end
 
 remote_file cached_driver_filename do
   source driver_url
-  checksum node["bonita"]["database"]["driver_package_checksum"]
   mode "0600"
   not_if { ::File.exists?(cached_driver_filename) }
 end
@@ -65,7 +63,6 @@ end
 
 remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
   source node["bonita"]["license_url"]
-  checksum node["bonita"]["license_checksum"]
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode "0600"

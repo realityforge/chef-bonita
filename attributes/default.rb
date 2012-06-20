@@ -24,9 +24,7 @@ home_dir = "/usr/local/bonita-#{version}"
 override["bonita"]["version"] = version
 override["bonita"]["home_dir"] = home_dir
 default["bonita"]["package_url"] = nil
-default["bonita"]["package_checksum"] = nil
 default["bonita"]["license_url"] = nil
-default["bonita"]["license_checksum"] = nil
 
 default["bonita"]["database"]["hibernate"]["dialect"] = "org.hibernate.dialect.SQLServerDialect"
 default["bonita"]["database"]["exo_jcr"]["dialect"] = "mssql"
@@ -38,7 +36,6 @@ default["bonita"]["database"]["jdbc"]["xcmis_url"] = nil
 default["bonita"]["database"]["jdbc"]["username"] = "bonita"
 default["bonita"]["database"]["jdbc"]["password"] = "bonita"
 default["bonita"]["database"]["driver_package_url"] = nil
-default["bonita"]["database"]["driver_package_checksum"] = nil
 
 default["bonita"]["xcmis"]["username"] = "xcmis"
 default["bonita"]["xcmis"]["password"] = "xcmis"
