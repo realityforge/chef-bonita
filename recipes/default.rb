@@ -26,21 +26,11 @@ package_url = node['bonita']['package_url']
 base_package_filename = File.basename(package_url)
 cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
 
-driver_url = node['bonita']['database']['driver_package_url']
-driver_base_filename = File.basename(driver_url)
-cached_driver_filename = "#{Chef::Config[:file_cache_path]}/#{driver_base_filename}"
-
 # Download the Bonita archive from a remote location
 remote_file cached_package_filename do
   source package_url
   mode '0600'
   not_if { ::File.exists?(cached_package_filename) }
-end
-
-remote_file cached_driver_filename do
-  source driver_url
-  mode '0600'
-  not_if { ::File.exists?(cached_driver_filename) }
 end
 
 bash "unpack_and_setup_bonita" do
@@ -49,7 +39,6 @@ mkdir /tmp/bonita
 cd /tmp/bonita
 unzip -qq #{cached_package_filename}
 cd BOS-SP-#{node['bonita']['version']}-Tomcat-6.0.33
-cp #{cached_driver_filename} lib/bonita
 rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
 mkdir -p bonita/server/licenses
 mkdir -p bonita/server/default/conf
@@ -64,6 +53,18 @@ mv BOS-SP-#{node['bonita']['version']}-Tomcat-6.0.33 #{node['bonita']['home_dir'
 rm -rf /tmp/bonita
 EOF
   not_if { ::File.exists?(node['bonita']['home_dir']) }
+end
+
+node['bonita']['extra_libraries'].each do |library|
+  filename = "#{node['bonita']['home_dir']}/lib/bonita/#{File.basename(library)}"
+  remote_file filename do
+    source library
+    owner node['tomcat']['user']
+    group node['tomcat']['group']
+    mode '0600'
+    not_if { ::File.exists?(filename) }
+    notifies :restart, 'service[tomcat]', :delayed
+  end
 end
 
 if node['bonita']['license_url']

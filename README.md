@@ -33,7 +33,6 @@ Attributes
 * `node['bonita']['database']['jdbc']['xcmis_url']` - The database jdbc url for xcmis. Defaults to nil.
 * `node['bonita']['database']['jdbc']['username']` - The database username.
 * `node['bonita']['database']['jdbc']['password']` - The database username.
-* `node['bonita']['database']['driver_package_url']` - The url to package containing database driver.
 * `node['bonita']['xcmis']['username']` - The xCMIS username.
 * `node['bonita']['xcmis']['password']` - The xCMIS password.
 
@@ -46,9 +45,9 @@ Here is some example properties defined on a role that includes bonita.
       {
         :package_url => 'http://repo.example.com/com/bonitasoft/bonitasoft-server-sp/5.6/bonitasoft-server-sp-5.6-tomcat.zip',
         :license_url => 'http://repo.example.com/com/bonitasoft/bonitasoft-server-sp/license/5.6/license-5.6-MyUser-bonita.example.com-20111128-20120226.lic',
+        :extra_libraries => ['http://repo.example.com/net/sourceforge/jtds/jtds/1.2.4/jtds-1.2.4.jar'],
         :database =>
           {
-            :driver_package_url => 'http://repo.example.com/net/sourceforge/jtds/jtds/1.2.4/jtds-1.2.4.jar',
             :jdbc =>
               {
                 :bonita_url => 'jdbc:jtds:sqlserver://db.example.com/BONITA',

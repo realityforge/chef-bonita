@@ -1,5 +1,7 @@
 ## v0.1.1:
 
+* Replace the usage of the `node['bonita']['database']['driver_package_url']` attribute with the
+  `node['bonita']['extra_libraries']` attributes that contains a list of jars to add to classpath.
 * Ensure compliance with foodcritic recommendations and enforce via TravisCI.
 * Remove the default usernames and passwords for all the database connections. Add guards in recipe to ensure they
   are specified.

@@ -26,6 +26,7 @@ override['bonita']['home_dir'] = home_dir
 default['bonita']['package_url'] = nil
 default['bonita']['license_url'] = nil
 
+default['bonita']['extra_libraries'] = []
 default['bonita']['database']['hibernate']['dialect'] = 'org.hibernate.dialect.SQLServerDialect'
 default['bonita']['database']['exo_jcr']['dialect'] = 'mssql'
 default['bonita']['database']['hibernate']['interceptor'] = 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'
@@ -35,7 +36,6 @@ default['bonita']['database']['jdbc']['bonita_journal_url'] = nil
 default['bonita']['database']['jdbc']['xcmis_url'] = nil
 default['bonita']['database']['jdbc']['username'] = nil
 default['bonita']['database']['jdbc']['password'] = nil
-default['bonita']['database']['driver_package_url'] = nil
 
 default['bonita']['xcmis']['username'] = nil
 default['bonita']['xcmis']['password'] = nil
