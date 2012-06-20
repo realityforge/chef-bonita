@@ -19,7 +19,7 @@
 
 include_attribute "tomcat::default"
 
-version = '5.6.2'
+version = '5.7.1'
 home_dir = "/usr/local/bonita-#{version}"
 override['bonita']['version'] = version
 override['bonita']['home_dir'] = home_dir
