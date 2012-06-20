@@ -43,18 +43,14 @@ default["bonita"]["database"]["driver_package_checksum"] = nil
 default["bonita"]["xcmis"]["username"] = "xcmis"
 default["bonita"]["xcmis"]["password"] = "xcmis"
 
-unless node["tomcat"]["common_loader_additions"] && node["tomcat"]["common_loader_additions"].any? { |entry| entry.include?("#{home_dir}/") }
-  override["tomcat"]["common_loader_additions"] =
-    node["tomcat"]["common_loader_additions"] + ["#{home_dir}/lib/bonita/*.jar"]
-end
+override["tomcat"]["common_loader_additions"] =["#{home_dir}/lib/bonita/*.jar"]
 
-unless node["tomcat"]["java_options"] && node["tomcat"]["java_options"].include?("#{home_dir}/")
-  java_options = node["tomcat"]["java_options"] || {}
-  java_options += " -DBONITA_HOME=#{home_dir}/bonita"
-  java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"
-  java_options += " -Djava.util.logging.config.file=#{home_dir}/external/logging/logging.properties"
-  java_options += " -Dexo.data.dir=#{home_dir}/external/xcmis/ext-exo-data"
-  java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
-  java_options += " -Dorg.exoplatform.container.standalone.config=#{home_dir}/external/xcmis/ext-exo-conf/exo-configuration.xml"
-  default["tomcat"]["java_options"] = java_options
-end
+java_options = ""
+java_options += " -DBONITA_HOME=#{home_dir}/bonita"
+java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"
+java_options += " -Djava.util.logging.config.file=#{home_dir}/external/logging/logging.properties"
+java_options += " -Dexo.data.dir=#{home_dir}/external/xcmis/ext-exo-data"
+java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
+java_options += " -Dorg.exoplatform.container.standalone.config=#{home_dir}/external/xcmis/ext-exo-conf/exo-configuration.xml"
+java_options += " -Djava.awt.headless=true"
+override["tomcat"]["java_options"] = java_options
