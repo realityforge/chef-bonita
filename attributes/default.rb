@@ -21,26 +21,26 @@ include_attribute "tomcat::default"
 
 version = '5.6.2'
 home_dir = "/usr/local/bonita-#{version}"
-override["bonita"]["version"] = version
-override["bonita"]["home_dir"] = home_dir
-default["bonita"]["package_url"] = nil
-default["bonita"]["license_url"] = nil
+override['bonita']['version'] = version
+override['bonita']['home_dir'] = home_dir
+default['bonita']['package_url'] = nil
+default['bonita']['license_url'] = nil
 
-default["bonita"]["database"]["hibernate"]["dialect"] = "org.hibernate.dialect.SQLServerDialect"
-default["bonita"]["database"]["exo_jcr"]["dialect"] = "mssql"
-default["bonita"]["database"]["hibernate"]["interceptor"] = "org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor"
-default["bonita"]["database"]["jdbc"]["driver"] = "net.sourceforge.jtds.jdbc.Driver"
-default["bonita"]["database"]["jdbc"]["bonita_history_url"] = nil
-default["bonita"]["database"]["jdbc"]["bonita_journal_url"] = nil
-default["bonita"]["database"]["jdbc"]["xcmis_url"] = nil
-default["bonita"]["database"]["jdbc"]["username"] = nil
-default["bonita"]["database"]["jdbc"]["password"] = nil
-default["bonita"]["database"]["driver_package_url"] = nil
+default['bonita']['database']['hibernate']['dialect'] = 'org.hibernate.dialect.SQLServerDialect'
+default['bonita']['database']['exo_jcr']['dialect'] = 'mssql'
+default['bonita']['database']['hibernate']['interceptor'] = 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'
+default['bonita']['database']['jdbc']['driver'] = 'net.sourceforge.jtds.jdbc.Driver'
+default['bonita']['database']['jdbc']['bonita_history_url'] = nil
+default['bonita']['database']['jdbc']['bonita_journal_url'] = nil
+default['bonita']['database']['jdbc']['xcmis_url'] = nil
+default['bonita']['database']['jdbc']['username'] = nil
+default['bonita']['database']['jdbc']['password'] = nil
+default['bonita']['database']['driver_package_url'] = nil
 
-default["bonita"]["xcmis"]["username"] = nil
-default["bonita"]["xcmis"]["password"] = nil
+default['bonita']['xcmis']['username'] = nil
+default['bonita']['xcmis']['password'] = nil
 
-override["tomcat"]["common_loader_additions"] =["#{home_dir}/lib/bonita/*.jar"]
+override['tomcat']['common_loader_additions'] =["#{home_dir}/lib/bonita/*.jar"]
 
 java_options = ""
 java_options += " -DBONITA_HOME=#{home_dir}/bonita"
@@ -50,4 +50,4 @@ java_options += " -Dexo.data.dir=#{home_dir}/external/xcmis/ext-exo-data"
 java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
 java_options += " -Dorg.exoplatform.container.standalone.config=#{home_dir}/external/xcmis/ext-exo-conf/exo-configuration.xml"
 java_options += " -Djava.awt.headless=true"
-override["tomcat"]["java_options"] = java_options
+override['tomcat']['java_options'] = java_options
