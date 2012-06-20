@@ -61,11 +61,13 @@ EOF
   not_if { ::File.exists?("#{node["bonita"]["home_dir"]}") }
 end
 
-remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
-  source node["bonita"]["license_url"]
-  owner node["tomcat"]["user"]
-  group node["tomcat"]["group"]
-  mode "0600"
+if node["bonita"]["license_url"]
+  remote_file "#{node["bonita"]["home_dir"]}/bonita/server/licenses/license.lic" do
+    source node["bonita"]["license_url"]
+    owner node["tomcat"]["user"]
+    group node["tomcat"]["group"]
+    mode "0600"
+  end
 end
 
 template "#{node["bonita"]["home_dir"]}/bonita/server/default/conf/bonita-history.properties" do
