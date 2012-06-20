@@ -1,5 +1,6 @@
 ## v0.1.1:
 
+* Ensure compliance with foodcritic recommendations and enforce via TravisCI.
 * Remove the default usernames and passwords for all the database connections. Add guards in recipe to ensure they
   are specified.
 * Remove the requirement for setting the checksum for packages as guards where already in place.
