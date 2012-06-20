@@ -22,6 +22,8 @@ raise "node['bonita']['database']['jdbc']['password'] not set" unless node['boni
 raise "node['bonita']['xcmis']['username'] not set" unless node['bonita']['xcmis']['username']
 raise "node['bonita']['xcmis']['password'] not set" unless node['bonita']['xcmis']['password']
 
+raise "node['bonita']['package_url'] not set" unless node['bonita']['package_url']
+
 package_url = node['bonita']['package_url']
 base_package_filename = File.basename(package_url)
 cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
