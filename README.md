@@ -5,15 +5,15 @@ Description
 
 
 Download BonitaSoft from a remote location and install it into the tomcat directories according to the directions. The
-cookbook has been tested with the "Subscription Pack" 5.6.2 version of the Bonita product. First you need to download the
+cookbook has been tested with the "Subscription Pack" version of the Bonita product. First you need to download the
 "Bonita Open Solution Deployment" package from the downloads page (http://www.bonitasoft.com/products/BPM_downloads/all)
 and upload it to a local location. We install it in a local Maven repository with coordinates
-"com.bonitasoft:bonitasoft-server-sp:5.6.2:tomcat:zip".
+"com.bonitasoft:bonitasoft-server-sp:5.7.1:tomcat:zip".
 
 Unfortunately the install can not be completely automated as BonitaSoft requires that you generate a license for the
 specific host that the product is deployed upon. So after the initial install you need to generate a license key as per
-the directions given by BonitaSoft (i.e. Run either /usr/local/bonita-5.6.2/licenses/generateRequestForAnyEnvironment.sh
-or /usr/local/bonita-5.6.2/licenses/generateRequestForDevelopmentEnvironment.sh and send of request to bonita and wait
+the directions given by BonitaSoft (i.e. Run either /usr/local/bonita-x.x.x/licenses/generateRequestForAnyEnvironment.sh
+or /usr/local/bonita-x.x.x/licenses/generateRequestForDevelopmentEnvironment.sh and send of request to bonita and wait
 for a response). The license needs to be made available over http. We make this license also available in a local Maven
  repository.
 
