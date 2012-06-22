@@ -25,6 +25,7 @@ Attributes
 
 * `node['bonita']['package_url']` - The url to package containing the bonita software. Must be specified.
 * `node['bonita']['license_url']` - The url to the license file for the bonita software.
+* `node['bonita']['logging_properties']` - A map of properties merged into the logging configuration.
 * `node['bonita']['database']['hibernate']['dialect']` - = 'org.hibernate.dialect.SQLServerDialect'.
 * `node['bonita']['database']['exo_jcr']['dialect']` - The xCMIS jcr dialect. Defaults to 'mssql'.
 * `node['bonita']['database']['hibernate']['interceptor']` - The Bonita hibernate interceptor. Defaults to 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'.
