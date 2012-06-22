@@ -27,6 +27,7 @@ default['bonita']['package_url'] = nil
 default['bonita']['license_url'] = nil
 
 default['bonita']['extra_libraries'] = []
+default['bonita']['logging_properties'] = Mash.new
 default['bonita']['database']['hibernate']['dialect'] = 'org.hibernate.dialect.SQLServerDialect'
 default['bonita']['database']['exo_jcr']['dialect'] = 'mssql'
 default['bonita']['database']['hibernate']['interceptor'] = 'org.ow2.bonita.env.interceptor.MSSQLServerDescNullsFirstInterceptor'

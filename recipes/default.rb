@@ -86,11 +86,31 @@ template "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-histor
   notifies :restart, 'service[tomcat]', :delayed
 end
 
+logging_properties = {
+  "handlers" => "java.util.logging.FileHandler",
+  ".level" => "INFO",
+  "java.util.logging.FileHandler.pattern" => "#{node['tomcat']['log_dir']}/bonita%u.log",
+  "java.util.logging.FileHandler.limit" => "50000",
+  "java.util.logging.FileHandler.count" => "1",
+  "java.util.logging.FileHandler.formatter" => "java.util.logging.SimpleFormatter",
+  "org.ow2.bonita.level" => "INFO",
+  "org.ow2.bonita.example.level" => "FINE",
+  "org.ow2.bonita.runtime.event.EventDispatcherThread.level" => "WARNING",
+  "org.bonitasoft.level" => "INFO",
+  "org.hibernate.level" => "WARNING",
+  "net.sf.ehcache.level" => "SEVERE",
+  "org.apache.catalina.session.PersistentManagerBase.level" => "OFF"
+}
+
+logging_properties.merge!(node['bonita']['logging_properties'].to_hash)
+
 template "#{node['bonita']['home_dir']}/external/logging/logging.properties" do
   source 'logging.properties.erb'
+  cookbook 'bonita'
   owner node['tomcat']['user']
   group node['tomcat']['group']
   mode '0600'
+  variables(:logging_properties => logging_properties)
   notifies :restart, 'service[tomcat]', :delayed
 end
 

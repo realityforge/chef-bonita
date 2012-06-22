@@ -1,3 +1,7 @@
+## v0.1.2:
+
+* Support the configuration of the logging properties.
+
 ## v0.1.1:
 
 * Upgrade to version 5.7.1 of BonitaSoft product.
