@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "tomcat::default"
+
 raise "node['bonita']['database']['jdbc']['username'] not set" unless node['bonita']['database']['jdbc']['username']
 raise "node['bonita']['database']['jdbc']['password'] not set" unless node['bonita']['database']['jdbc']['password']
 raise "node['bonita']['xcmis']['username'] not set" unless node['bonita']['xcmis']['username']

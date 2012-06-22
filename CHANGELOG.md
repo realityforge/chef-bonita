@@ -1,5 +1,6 @@
 ## v0.1.2:
 
+* Include the `tomcat::default` recipe at the top of the `bonita::default` recipe to simplify deployment.
 * Support the configuration of the logging properties.
 
 ## v0.1.1:
