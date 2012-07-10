@@ -34,7 +34,7 @@ cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_file
 remote_file cached_package_filename do
   source package_url
   mode '0600'
-  not_if { ::File.exists?(cached_package_filename) }
+  action :create_if_missing
 end
 
 bash "unpack_and_setup_bonita" do
@@ -66,7 +66,7 @@ node['bonita']['extra_libraries'].each do |library|
     owner node['tomcat']['user']
     group node['tomcat']['group']
     mode '0600'
-    not_if { ::File.exists?(filename) }
+    action :create_if_missing
     notifies :restart, 'service[tomcat]', :delayed
   end
 end

@@ -1,3 +1,7 @@
+## v0.1.3:
+
+* Use create_if_missing when downloading resources.
+
 ## v0.1.2:
 
 * Include the `tomcat::default` recipe at the top of the `bonita::default` recipe to simplify deployment.
