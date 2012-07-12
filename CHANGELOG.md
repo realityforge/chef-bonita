@@ -1,6 +1,7 @@
 ## v0.1.3:
 
 * Use create_if_missing when downloading resources.
+* Remove additional files from install directory that are not needed at runtime.
 
 ## v0.1.2:
 

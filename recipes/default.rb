@@ -43,7 +43,7 @@ mkdir /tmp/bonita
 cd /tmp/bonita
 unzip -qq #{cached_package_filename}
 cd BOS-SP-#{node['bonita']['version']}-Tomcat-6.0.33
-rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager
+rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager webapps/ROOT bonita/client NOTICE LICENSE RELEASE-NOTES RUNNING.txt
 mkdir -p bonita/server/licenses
 mkdir -p bonita/server/default/conf
 mkdir -p external/logging
