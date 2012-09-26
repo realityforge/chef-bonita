@@ -1,7 +1,7 @@
 Description
 ===========
 
-[![Build Status](https://secure.travis-ci.org/realityforge-cookbooks/bonita.png?branch=master)](http://travis-ci.org/realityforge-cookbooks/bonita)
+[![Build Status](https://secure.travis-ci.org/realityforge/chef-bonita.png?branch=master)](http://travis-ci.org/realityforge/chef-bonita)
 
 
 Download BonitaSoft from a remote location and install it into the tomcat directories according to the directions. The
