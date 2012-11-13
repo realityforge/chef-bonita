@@ -42,13 +42,3 @@ default['bonita']['database']['jdbc']['password'] = nil
 
 default['bonita']['xcmis']['username'] = nil
 default['bonita']['xcmis']['password'] = nil
-
-java_options = ""
-java_options += " -DBONITA_HOME=#{home_dir}/bonita"
-java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"
-java_options += " -Djava.util.logging.config.file=#{home_dir}/external/logging/logging.properties"
-java_options += " -Dexo.data.dir=#{home_dir}/external/xcmis/ext-exo-data"
-java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
-java_options += " -Dorg.exoplatform.container.standalone.config=#{home_dir}/external/xcmis/ext-exo-conf/exo-configuration.xml"
-java_options += " -Djava.awt.headless=true"
-override['tomcat']['java_options'] = java_options

@@ -19,6 +19,16 @@
 
 node.override['tomcat']['common_loader_additions'] =["#{node['bonita']['home_dir']}/lib/bonita/*.jar"]
 
+java_options = ""
+java_options += " -DBONITA_HOME=#{node['bonita']['home_dir']}/bonita"
+java_options += " -Djava.security.auth.login.config=#{node['bonita']['home_dir']}/external/security/jaas-tomcat.cfg"
+java_options += " -Djava.util.logging.config.file=#{node['bonita']['home_dir']}/external/logging/logging.properties"
+java_options += " -Dexo.data.dir=#{node['bonita']['home_dir']}/external/xcmis/ext-exo-data"
+java_options += " -Dfile.encoding=UTF-8 -Xshare:auto -Xms512m -Xmx2048m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
+java_options += " -Dorg.exoplatform.container.standalone.config=#{node['bonita']['home_dir']}/external/xcmis/ext-exo-conf/exo-configuration.xml"
+java_options += " -Djava.awt.headless=true"
+node.override['tomcat']['java_options'] = java_options
+
 include_recipe "tomcat::default"
 
 raise "node['bonita']['database']['jdbc']['username'] not set" unless node['bonita']['database']['jdbc']['username']
