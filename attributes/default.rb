@@ -20,7 +20,6 @@
 include_attribute "tomcat::default"
 
 default['bonita']['home_dir'] = "/usr/local/bonita"
-override['bonita']['version'] = version
 default['bonita']['license']['url'] = nil
 default['bonita']['license']['type'] = 'development'
 default['bonita']['license']['request'] = nil
