@@ -140,6 +140,25 @@ template "#{node['bonita']['home_dir']}/external/xcmis/ext-exo-conf/cmis-jcr-con
   notifies :restart, 'service[tomcat]', :delayed
 end
 
+["cmis-nodetypes-config.xml", "nodetypes-config-extended.xml", "nodetypes-config.xml", "organization-nodetypes.xml"].
+  each do |config_filename|
+  cookbook_file "#{node['bonita']['home_dir']}/external/xcmis/ext-exo-conf/#{config_filename}" do
+    source "xcmis/#{config_filename}"
+    owner node['tomcat']['user']
+    group node['tomcat']['group']
+    mode '0600'
+    notifies :restart, 'service[tomcat]', :delayed
+  end
+end
+
+cookbook_file "#{node['bonita']['home_dir']}/external/security/jaas-tomcat.cfg" do
+  source "jaas-tomcat.cfg"
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
+  mode '0600'
+  notifies :restart, 'service[tomcat]', :delayed
+end
+
 template "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-server.xml" do
   source 'bonita-server.xml.erb'
   owner node['tomcat']['user']
