@@ -3,6 +3,7 @@
 * Refactor the cookbook to use the artifacts produced by the glassfish-bonita project @
   https://github.com/realityforge/glassfish-bonita
 * Generate a license request and save it as attribute data at bonita.license.request
+* Update the base directory attribute to allow it to be reconfigured.
 
 ## v0.1.3:
 
