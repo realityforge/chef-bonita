@@ -43,8 +43,6 @@ default['bonita']['database']['jdbc']['password'] = nil
 default['bonita']['xcmis']['username'] = nil
 default['bonita']['xcmis']['password'] = nil
 
-override['tomcat']['common_loader_additions'] =["#{home_dir}/lib/bonita/*.jar"]
-
 java_options = ""
 java_options += " -DBONITA_HOME=#{home_dir}/bonita"
 java_options += " -Djava.security.auth.login.config=#{home_dir}/external/security/jaas-tomcat.cfg"

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+node.override['tomcat']['common_loader_additions'] =["#{node['bonita']['home_dir']}/lib/bonita/*.jar"]
+
 include_recipe "tomcat::default"
 
 raise "node['bonita']['database']['jdbc']['username'] not set" unless node['bonita']['database']['jdbc']['username']
