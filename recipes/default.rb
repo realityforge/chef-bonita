@@ -112,6 +112,13 @@ CMD
   action :run
   not_if { ::File.exist?("#{node['bonita']['home_dir']}/bonita/client/tenants/default/web/XP/looknfeel/default/BonitaConsole.html") }
 end
+
+ruby_block "generate_license_request" do
+  block do
+    dev_mode = node['bonita']['license']['type'] != 'production'
+    node.override['bonita']['license']['request'] =
+      `echo #{node['cpu']['total']} | java -cp #{keygen_filename} org.bonitasoft.security.generateKey.GenerateKey#{dev_mode ? 'Dev' : ''} | tail -n 1`
+  end
 end
 
 node['bonita']['extra_libraries'].each do |library|

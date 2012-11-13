@@ -24,6 +24,8 @@ home_dir = "/usr/local/bonita-#{version}"
 override['bonita']['version'] = version
 override['bonita']['home_dir'] = home_dir
 default['bonita']['license']['url'] = nil
+default['bonita']['license']['type'] = 'development'
+default['bonita']['license']['request'] = nil
 
 default['bonita']['packages']['bonita'] = nil
 default['bonita']['packages']['client'] = nil
