@@ -31,44 +31,87 @@ node.override['tomcat']['java_options'] = java_options
 
 include_recipe "tomcat::default"
 
+raise "node['bonita']['packages']['bonita'] not set" unless node['bonita']['packages']['bonita']
+raise "node['bonita']['packages']['client'] not set" unless node['bonita']['packages']['client']
+raise "node['bonita']['packages']['keygen'] not set" unless node['bonita']['packages']['keygen']
+raise "node['bonita']['packages']['xcmis'] not set" unless node['bonita']['packages']['xcmis']
 raise "node['bonita']['database']['jdbc']['username'] not set" unless node['bonita']['database']['jdbc']['username']
 raise "node['bonita']['database']['jdbc']['password'] not set" unless node['bonita']['database']['jdbc']['password']
 raise "node['bonita']['xcmis']['username'] not set" unless node['bonita']['xcmis']['username']
 raise "node['bonita']['xcmis']['password'] not set" unless node['bonita']['xcmis']['password']
 
-raise "node['bonita']['package_url'] not set" unless node['bonita']['package_url']
+["",
+ "/bonita",
+ "/bonita/client",
+ "/bonita/server",
+ "/bonita/server/licenses",
+ "/bonita/server/default",
+ "/bonita/server/default/conf",
+ "/external",
+ "/external/logging",
+ "/external/security",
+ "/external/xcmis",
+ "/external/xcmis/ext-exo-conf",
+ "/lib",
+ "/lib/bonita",
+].each do |directory|
+  directory "#{node['bonita']['home_dir']}#{directory}" do
+    owner node['tomcat']['user']
+    group node['tomcat']['group']
+    mode '0700'
+    recursive true
+  end
+end
 
-package_url = node['bonita']['package_url']
-base_package_filename = File.basename(package_url)
-cached_package_filename = "#{Chef::Config[:file_cache_path]}/#{base_package_filename}"
-
-# Download the Bonita archive from a remote location
-remote_file cached_package_filename do
-  source package_url
+bonita_filename = "#{node['bonita']['home_dir']}/bpm-bonita-#{node['bonita']['version']}.war"
+remote_file bonita_filename do
+  source node['bonita']['packages']['bonita']
   mode '0600'
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
   action :create_if_missing
 end
 
-bash "unpack_and_setup_bonita" do
-    code <<-EOF
-mkdir /tmp/bonita
-cd /tmp/bonita
-unzip -qq #{cached_package_filename}
-cd BOS-SP-#{node['bonita']['version']}-Tomcat-6.0.33
-rm -rf bin conf lib/*.jar logs temp work webapps/docs webapps/examples webapps/host-manager webapps/manager webapps/ROOT bonita/client NOTICE LICENSE RELEASE-NOTES RUNNING.txt
-mkdir -p bonita/server/licenses
-mkdir -p bonita/server/default/conf
-mkdir -p external/logging
-mkdir -p external/xcmis/ext-exo-conf
-chown -R #{node['tomcat']['user']} .
-chgrp -R #{node['tomcat']['group']} .
-find . -type f -exec chmod 0600 {} \\;
-cd /tmp/bonita
-rm -rf #{node['bonita']['home_dir']}
-mv BOS-SP-#{node['bonita']['version']}-Tomcat-6.0.33 #{node['bonita']['home_dir']}
-rm -rf /tmp/bonita
-EOF
-  not_if { ::File.exists?(node['bonita']['home_dir']) }
+client_filename = "#{node['bonita']['home_dir']}/bpm-client-#{node['bonita']['version']}.zip"
+remote_file client_filename do
+  source node['bonita']['packages']['client']
+  mode '0600'
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
+  action :create_if_missing
+end
+
+keygen_filename = "#{node['bonita']['home_dir']}/bpm-keygen-#{node['bonita']['version']}.jar"
+remote_file keygen_filename do
+  source node['bonita']['packages']['keygen']
+  mode '0600'
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
+  action :create_if_missing
+end
+
+xcmis_filename = "#{node['bonita']['home_dir']}/bpm-xcmis-#{node['bonita']['version']}.war"
+remote_file xcmis_filename do
+  source node['bonita']['packages']['xcmis']
+  mode '0600'
+  owner node['tomcat']['user']
+  group node['tomcat']['group']
+  action :create_if_missing
+end
+
+package 'zip'
+
+execute "unzip client libs" do
+  command <<CMD
+umask 0600
+unzip -u -o "#{node['bonita']['home_dir']}/#{File.basename(node['bonita']['packages']['client'])}"
+CMD
+  user node['tomcat']['user']
+  group node['tomcat']['group']
+  cwd "#{node['bonita']['home_dir']}/bonita/client"
+  action :run
+  not_if { ::File.exist?("#{node['bonita']['home_dir']}/bonita/client/tenants/default/web/XP/looknfeel/default/BonitaConsole.html") }
+end
 end
 
 node['bonita']['extra_libraries'].each do |library|
@@ -179,13 +222,24 @@ template "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-server
   notifies :restart, 'service[tomcat]', :delayed
 end
 
+directory "#{node["tomcat"]["webapp_dir"]}/bonita" do
+  recursive true
+  action :nothing
+end
+
 template "#{node['tomcat']['context_dir']}/bonita.xml" do
   source 'bonita-context.xml.erb'
   owner node['tomcat']['user']
   group node['tomcat']['group']
   mode '0600'
-  variables(:war => "#{node['bonita']['home_dir']}/webapps/bonita.war")
+  variables(:war => bonita_filename)
   notifies :restart, 'service[tomcat]', :delayed
+  notifies :delete, "directory[#{node['tomcat']['webapp_dir']}/bonita]", :immediate
+end
+
+directory "#{node["tomcat"]["webapp_dir"]}/xcmis" do
+  recursive true
+  action :nothing
 end
 
 template "#{node['tomcat']['context_dir']}/xcmis.xml" do
@@ -193,15 +247,17 @@ template "#{node['tomcat']['context_dir']}/xcmis.xml" do
   owner node['tomcat']['user']
   group node['tomcat']['group']
   mode '0600'
-  variables(:war => "#{node['bonita']['home_dir']}/webapps/xcmis.war")
+  variables(:war => xcmis_filename)
+  notifies :restart, 'service[tomcat]', :delayed
+  notifies :delete, "directory[#{node['tomcat']['webapp_dir']}/xcmis]", :immediate
+end
+
+file "#{node['tomcat']['context_dir']}/manager.xml" do
+  action :delete
   notifies :restart, 'service[tomcat]', :delayed
 end
 
-template "#{node['tomcat']['context_dir']}/bonita-app.xml" do
-  source 'base-context.xml.erb'
-  owner node['tomcat']['user']
-  group node['tomcat']['group']
-  mode '0600'
-  variables(:war => "#{node['bonita']['home_dir']}/webapps/bonita-app.war", :path => '/bonita-app')
+file "#{node['tomcat']['context_dir']}/host-manager.xml" do
+  action :delete
   notifies :restart, 'service[tomcat]', :delayed
 end

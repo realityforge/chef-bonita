@@ -26,6 +26,11 @@ override['bonita']['home_dir'] = home_dir
 default['bonita']['package_url'] = nil
 default['bonita']['license']['url'] = nil
 
+default['bonita']['packages']['bonita'] = nil
+default['bonita']['packages']['client'] = nil
+default['bonita']['packages']['keygen'] = nil
+default['bonita']['packages']['xcmis'] = nil
+
 default['bonita']['extra_libraries'] = []
 default['bonita']['logging_properties'] = Mash.new
 default['bonita']['database']['hibernate']['dialect'] = 'org.hibernate.dialect.SQLServerDialect'
