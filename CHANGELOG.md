@@ -1,3 +1,8 @@
+## v5.7.1:
+
+* Refactor the cookbook to use the artifacts produced by the glassfish-bonita project @
+  https://github.com/realityforge/glassfish-bonita
+
 ## v0.1.3:
 
 * Use create_if_missing when downloading resources.
