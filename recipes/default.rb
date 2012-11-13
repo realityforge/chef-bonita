@@ -83,9 +83,9 @@ node['bonita']['extra_libraries'].each do |library|
   end
 end
 
-if node['bonita']['license_url']
+if node['bonita']['license']['url']
   remote_file "#{node['bonita']['home_dir']}/bonita/server/licenses/license.lic" do
-    source node['bonita']['license_url']
+    source node['bonita']['license']['url']
     owner node['tomcat']['user']
     group node['tomcat']['group']
     mode '0600'

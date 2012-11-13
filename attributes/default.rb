@@ -24,7 +24,7 @@ home_dir = "/usr/local/bonita-#{version}"
 override['bonita']['version'] = version
 override['bonita']['home_dir'] = home_dir
 default['bonita']['package_url'] = nil
-default['bonita']['license_url'] = nil
+default['bonita']['license']['url'] = nil
 
 default['bonita']['extra_libraries'] = []
 default['bonita']['logging_properties'] = Mash.new
