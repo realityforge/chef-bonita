@@ -39,9 +39,9 @@ ruby_block "restart_tomcat" do
   block do
   end
   action :nothing
-  subscribes :run, resources(:template => "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-history.properties"), :delayed
-  subscribes :run, resources(:template => "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-journal.properties"), :delayed
-  subscribes :run, resources(:template => "#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-server.xml"), :delayed
+  subscribes :create, "template[#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-history.properties]", :delayed
+  subscribes :create, "template[#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-journal.properties]", :delayed
+  subscribes :create, "template[#{node['bonita']['home_dir']}/bonita/server/default/conf/bonita-server.xml]", :delayed
   notifies :restart, 'service[tomcat]', :delayed
 end
 
