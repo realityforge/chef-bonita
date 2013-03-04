@@ -17,26 +17,30 @@
         <standard-transaction-interceptor />
       </command-service>
 
+      <!-- Description: Implementation of the document storage service. -->
+      <document-storage-service name='document-storage-service' class='org.ow2.bonita.services.impl.DocumentStorageServiceImpl'>
+        <arg><string value='bonita-session:core' /></arg>
+      </document-storage-service>
+
       <!-- Description: Implementation of the documentation manager. -->
-      <documentation-manager name='documentation-manager' class='org.ow2.bonita.services.impl.CMISDocumentManager'>
-        <arg><string value='ATOM' /></arg>
-        <arg><string value='http://localhost:<%= node["tomcat"]["port"] %>/xcmis/rest/cmisatom' /></arg>
-        <arg><string value='default' /></arg>
-        <arg>
-          <object class='org.ow2.bonita.services.impl.XCmisUserProvider'>
-            <constructor>
-              <arg><string value='<%= node["bonita"]["xcmis"]["username"] %>'/></arg>
-              <arg><string value='<%= node["bonita"]["xcmis"]["password"] %>'/></arg>
-            </constructor>
-          </object>
-        </arg>
+      <documentation-manager name='documentation-manager' class='org.ow2.bonita.services.impl.DocumentManagerImpl'>
+        <arg><string value='bonita-session:core' /></arg>
       </documentation-manager>
 
       <!-- Description: Specify the domain of this environment -->
       <domain id='default' />
 
       <!-- Description: Service which executes events -->
-      <event-executor idle-min='50' idle='10000' threads='3' lock='120000' retries='5' auto-start='true' command-service='command-service'/>
+      <event-executor idle-min='50' idle='10000' threads='3' lock='120000' retries='5' auto-start='true' command-service='command-service'>
+        <job-executor class='org.ow2.bonita.runtime.event.MemoryLockJobExecutor' max-parallel-jobs='50' clean-locks-at-startup='false' />
+        <matchers matching-condition-messages='true' without-matching-condition-messages='true' />
+      </event-executor>
+
+      <!-- Description: Identify if extension points (connectors and Groovy scritps) throw the exception on failure -->
+      <extension-points throw-exception-on-failure='false' />
+
+      <!-- Unsure why this is needed but it seems to be needed on glassfish -->
+      <iteration-detection-policy disable='false' />
 
       <!-- Description: List of services called when an instance is finished. -->
       <chainer name='finished-instance-handler'>
@@ -46,14 +50,14 @@
 
       <!-- Description: Configuration of the Hibernate session factory used by Bonita core. -->
       <hibernate-configuration name='hibernate-configuration:core' >
-        <properties file='${BONITA_HOME}/server/default/conf/bonita-journal.properties' />
+        <properties file='<%= node['bonita']['home_dir'] %>/bonita/server/default/conf/bonita-journal.properties' />
         <mappings resource='bonita.mappings.hbm.xml' />
         <cache-configuration resource='bonita.core.cache.xml' usage='read-write' />
       </hibernate-configuration>
 
       <!-- Description: Configuration of the Hibernate session factory used by Bonita history. -->
       <hibernate-configuration name='hibernate-configuration:history' >
-        <properties file='${BONITA_HOME}/server/default/conf/bonita-history.properties' />
+        <properties file='<%= node['bonita']['home_dir'] %>/bonita/server/default/conf/bonita-history.properties' />
         <mappings resource='bonita.mappings.hbm.xml' />
         <cache-configuration resource='bonita.history.cache.xml' usage='nonstrict-read-write' />
       </hibernate-configuration>
@@ -66,7 +70,7 @@
 
       <!-- Description: Implementation of the large data repository. -->
       <large-data-repository name='large-data-repository' class='org.ow2.bonita.services.impl.FileLargeDataRepository'>
-        <arg><string value='${BONITA_HOME}/server/default/work' /></arg>
+        <arg><string value='<%= node['bonita']['large_data_repository'] %>' /></arg>
       </large-data-repository>
 
       <!-- Description: Implementation of the LobCreator interface which will be used to create SQL Blobs, Clobs. -->

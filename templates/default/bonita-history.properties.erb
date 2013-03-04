@@ -12,18 +12,20 @@
 
 hibernate.dialect                        <%= node["bonita"]["database"]["hibernate"]["dialect"] %>
 
+<% if node["bonita"]["database"]["hibernate"]["interceptor"] -%>
 # Using an interceptor can change the database behaviour. By default, an interceptor is defined to order the result of queries by adding null values at the end.
 bonita.hibernate.interceptor             <%= node["bonita"]["database"]["hibernate"]["interceptor"] %>
+<% end -%>
 
 # Table are automatically create in database
-hibernate.hbm2ddl.auto                   update
+hibernate.hbm2ddl.auto                   validate
 
 # Location of the datasource (define in Tomcat configuration file: conf/context.xml)
-hibernate.connection.datasource          java:/comp/env/bonita/default/history
+hibernate.connection.datasource          <%= node['bonita']['database']['jdbc']['history']['resource'] %>
 
-<% if node['bonita']['database']['jdbc']['history']['schema'] %>
+<% if node['bonita']['database']['jdbc']['history']['schema'] -%>
 hibernate.default_schema                 <%= node['bonita']['database']['jdbc']['history']['schema'] %>
-<% end %>
+<% end -%>
 
 ###################
 # Common settings #
@@ -53,10 +55,11 @@ hibernate.use_sql_comments               false
 # Bonita Search
 ##
 bonita.search.use                        true
-hibernate.search.default.indexBase       ${BONITA_HOME}/server/default/work/indexes/history
+hibernate.search.default.indexBase       <%= node['bonita']['database']['jdbc']['history']['search_index_dir'] %>
 hibernate.jdbc.use_scrollable_resultset  true
 
-
+hibernate.validator.apply_to_ddl           false
+hibernate.validator.autoregister_listeners false
 
 ############
 # Examples #
@@ -99,7 +102,7 @@ hibernate.jdbc.use_scrollable_resultset  true
 ##
 # ORACLE
 
-#hibernate.dialect                        org.hibernate.dialect.Oracle10gDialect
+#hibernate.dialect                        org.ow2.bonita.util.hibernate.BonitaOracle10gDialect
 
 ##
 # SQLSERVER

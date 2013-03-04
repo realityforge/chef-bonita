@@ -1,3 +1,9 @@
+## v5.9.1:
+
+* Upgrade the cookbook to work with bonita version 5.9.1. Split the configuration into
+  two recipes so that bonita_home can be managed by the cookbook but the deployment can
+  be managed by other cookbooks such as glassfish.
+
 ## v5.7.1:
 
 * Refactor the cookbook to use the artifacts produced by the glassfish-bonita project @
